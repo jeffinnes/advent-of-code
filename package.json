@@ -4,7 +4,8 @@
   "description": "This is my collection of solutions to the Advent of Code event",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "this": "node --experimental-strip-types --experimental-transform-types"
   },
   "repository": {
     "type": "git",
