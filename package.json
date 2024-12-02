@@ -1,0 +1,19 @@
+{
+  "name": "advent-of-code",
+  "version": "1.0.0",
+  "description": "This is my collection of solutions to the Advent of Code event",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jeffinnes/advent-of-code.git"
+  },
+  "author": "Jeff Innes",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jeffinnes/advent-of-code/issues"
+  },
+  "homepage": "https://github.com/jeffinnes/advent-of-code#readme"
+}
