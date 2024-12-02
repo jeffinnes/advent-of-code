@@ -15,5 +15,6 @@
   "bugs": {
     "url": "https://github.com/jeffinnes/advent-of-code/issues"
   },
-  "homepage": "https://github.com/jeffinnes/advent-of-code#readme"
+  "homepage": "https://github.com/jeffinnes/advent-of-code#readme",
+  "type": "module"
 }
