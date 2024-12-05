@@ -16,7 +16,7 @@ let safeReportCount: number = 0;
 // each element of the reports array is a single report
 const reports: string[] = rawReports.split('\n');
 
-function reportIsSafe(report: string): { isSafe: boolean; badLevel?: number } {
+function reportIsSafe(report: string): boolean {
   const reportAsArray: string[] = report.split(' ');
   let reportIsAscending: boolean = true;
 
@@ -37,29 +37,21 @@ function reportIsSafe(report: string): { isSafe: boolean; badLevel?: number } {
       (!reportIsAscending && thisLevel < nextLevel) ||
       thisLevel === nextLevel
     ) {
-      return {
-        isSafe: false,
-        badLevel: i,
-      };
+      return false;
     }
 
     // Check the magnitude of the step between levels
     if (Math.abs(thisLevel - nextLevel) > 3) {
-      return {
-        isSafe: false,
-        badLevel: i,
-      };
+      return false;
     }
   }
 
-  return {
-    isSafe: true,
-  };
+  return true;
 }
 
 // Loop over the reports and check to see if they are safe
 reports.forEach((report) => {
-  if (reportIsSafe(report).isSafe) {
+  if (reportIsSafe(report)) {
     safeReportCount += 1;
   }
 });
@@ -73,16 +65,14 @@ safeReportCount = 0;
 
 // Loop over the reports and check to see if they are safe
 reports.forEach((report) => {
-  const reportSafetyResult: { isSafe: boolean; badLevel?: number } = reportIsSafe(report);
-
-  if (reportSafetyResult.isSafe) {
+  if (reportIsSafe(report)) {
     safeReportCount += 1;
   } else {
     const reportAsArray: string[] = report.split(' ');
 
     for (let i = 0; i < reportAsArray.length; i++) {
       const splicedArray: string[] = [...reportAsArray.slice(0, i), ...reportAsArray.slice(i + 1)];
-      if (reportIsSafe(splicedArray.join(' ')).isSafe) {
+      if (reportIsSafe(splicedArray.join(' '))) {
         safeReportCount += 1;
         break;
       }
