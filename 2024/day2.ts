@@ -77,25 +77,17 @@ reports.forEach((report) => {
 
   if (reportSafetyResult.isSafe) {
     safeReportCount += 1;
-  } else if (reportSafetyResult.badLevel) {
-    console.log('Bad Report: ', report, reportSafetyResult);
-
+  } else {
     const reportAsArray: string[] = report.split(' ');
 
-    const splicedArray: string[] = [
-      ...reportAsArray.slice(0, reportSafetyResult.badLevel),
-      ...reportAsArray.slice(reportSafetyResult.badLevel + 1),
-    ];
-
-    if (reportIsSafe(splicedArray.join(' ')).isSafe) {
-      safeReportCount += 1;
-    } else {
-      console.log(splicedArray.join(' '), ' still not safe');
+    for (let i = 0; i < reportAsArray.length; i++) {
+      const splicedArray: string[] = [...reportAsArray.slice(0, i), ...reportAsArray.slice(i + 1)];
+      if (reportIsSafe(splicedArray.join(' ')).isSafe) {
+        safeReportCount += 1;
+        break;
+      }
     }
-  } else {
-    console.log('Bad Report no bad level: ', report, reportSafetyResult);
   }
-  console.log('safeReportCount: ', safeReportCount, '\n');
 });
 
 console.log('Count of Safe Reports Part 2: ', safeReportCount);
@@ -106,4 +98,10 @@ console.log('Count of Safe Reports Part 2: ', safeReportCount);
  * Bad Report:  3 1 3 4 7 9 13 { isSafe: false, badLevel: 1 }
  * 3 3 4 7 9 13  still not safe
  * safeReportCount:  4
+ */
+
+/**
+ * The answer it turned out was not to know which level to remove
+ * but instead to start at the beginning of the array splicing out one level at a time
+ * and stoping when a safe report is found
  */
