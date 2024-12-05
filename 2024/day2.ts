@@ -16,10 +16,8 @@ let safeReportCount: number = 0;
 // each element of the reports array is a single report
 const reports: string[] = rawReports.split('\n');
 
-// Loop over the reports and check to see if they are safe
-reports.forEach((report) => {
+function reportIsSafe(report: string): { isSafe: boolean; badLevel?: number } {
   const reportAsArray: string[] = report.split(' ');
-  let reportIsSafe: boolean = true;
   let reportIsAscending: boolean = true;
 
   // Determine if the report should actually be descending based on first two values
@@ -39,23 +37,73 @@ reports.forEach((report) => {
       (!reportIsAscending && thisLevel < nextLevel) ||
       thisLevel === nextLevel
     ) {
-      reportIsSafe = false;
-
-      // The direction changed, no need to check the steps magnitude;
-      break;
+      return {
+        isSafe: false,
+        badLevel: i,
+      };
     }
 
     // Check the magnitude of the step between levels
     if (Math.abs(thisLevel - nextLevel) > 3) {
-      reportIsSafe = false;
+      return {
+        isSafe: false,
+        badLevel: i,
+      };
     }
   }
 
-  if (reportIsSafe) {
+  return {
+    isSafe: true,
+  };
+}
+
+// Loop over the reports and check to see if they are safe
+reports.forEach((report) => {
+  if (reportIsSafe(report).isSafe) {
     safeReportCount += 1;
   }
-
-  //console.log(`${reportAsArray} - ${reportIsSafe ? 'Safe' : 'Unsafe'}`);
 });
 
-console.log('Count of Safe Reports: ', safeReportCount);
+console.log('Count of Safe Reports Part 1: ', safeReportCount);
+
+// Part 2
+
+// reset safeReportCount
+safeReportCount = 0;
+
+// Loop over the reports and check to see if they are safe
+reports.forEach((report) => {
+  const reportSafetyResult: { isSafe: boolean; badLevel?: number } = reportIsSafe(report);
+
+  if (reportSafetyResult.isSafe) {
+    safeReportCount += 1;
+  } else if (reportSafetyResult.badLevel) {
+    console.log('Bad Report: ', report, reportSafetyResult);
+
+    const reportAsArray: string[] = report.split(' ');
+
+    const splicedArray: string[] = [
+      ...reportAsArray.slice(0, reportSafetyResult.badLevel),
+      ...reportAsArray.slice(reportSafetyResult.badLevel + 1),
+    ];
+
+    if (reportIsSafe(splicedArray.join(' ')).isSafe) {
+      safeReportCount += 1;
+    } else {
+      console.log(splicedArray.join(' '), ' still not safe');
+    }
+  } else {
+    console.log('Bad Report no bad level: ', report, reportSafetyResult);
+  }
+  console.log('safeReportCount: ', safeReportCount, '\n');
+});
+
+console.log('Count of Safe Reports Part 2: ', safeReportCount);
+
+//
+/**
+ * How do I know which level to remove?
+ * Bad Report:  3 1 3 4 7 9 13 { isSafe: false, badLevel: 1 }
+ * 3 3 4 7 9 13  still not safe
+ * safeReportCount:  4
+ */
