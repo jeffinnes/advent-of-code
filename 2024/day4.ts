@@ -13,12 +13,6 @@ SAXAMASAAA
 MAMMMXMMMM
 MXMXAXMASX`; */
 
-/* const inputString: string = `MMMSXXMASM
-MSAMXMSMSA
-AMXSXMAAMM
-MSAMASMSMX
-XMASAMXAMM`; */
-
 // Part 1
 // Turn the input string into an array that represents the grid
 const wordSearchGrid: string[] = inputString.split('\n');
@@ -104,3 +98,60 @@ wordSearchGrid.forEach((row: string, y: number) => {
 
 console.log('Part 1');
 console.log('Answer: ', numberOfWordsFound);
+
+// part 2
+
+// Now we are looking for two MAS in the shape of an X
+// Every one of these shapes will have an A in the middle and two M's on one side and two S's on the other
+// For each 'A' found, check the 4 sides
+let numberOfXsFound: number = 0;
+
+// We start one row in and end one row early because it is not possible for the center of the x to be on an edge.
+for (let i = 1; i < wordSearchGrid.length - 1; i++) {
+  const row: string = wordSearchGrid[i];
+
+  for (let j = 1; j < row.length - 1; j++) {
+    const currentLetter: string = row[j];
+    const letterUpLeft: string = wordSearchGrid[i - 1][j - 1];
+    const letterUpRight: string = wordSearchGrid[i - 1][j + 1];
+    const letterDownRight: string = wordSearchGrid[i + 1][j + 1];
+    const letterDownLeft: string = wordSearchGrid[i + 1][j - 1];
+
+    if (currentLetter === 'A') {
+      // Check up
+      if (letterUpLeft === 'M' && letterUpRight === 'M') {
+        if (letterDownLeft === 'S' && letterDownRight === 'S') {
+          numberOfXsFound += 1;
+          continue;
+        }
+      }
+
+      // Check right
+      if (letterUpRight === 'M' && letterDownRight === 'M') {
+        if (letterUpLeft === 'S' && letterDownLeft === 'S') {
+          numberOfXsFound += 1;
+          continue;
+        }
+      }
+
+      // Check left
+      if (letterUpLeft === 'M' && letterDownLeft === 'M') {
+        if (letterUpRight === 'S' && letterDownRight === 'S') {
+          numberOfXsFound += 1;
+          continue;
+        }
+      }
+
+      // Check down
+      if (letterDownLeft === 'M' && letterDownRight === 'M') {
+        if (letterUpLeft === 'S' && letterUpRight === 'S') {
+          numberOfXsFound += 1;
+          continue;
+        }
+      }
+    }
+  }
+}
+
+console.log('Part 2');
+console.log('Answer: ', numberOfXsFound);
